@@ -68,12 +68,82 @@ function checkPalindromeForAllFormats(date){
     return flag;
 }
 
-var date = {
-    day: 01,
-    month: 030,
-    year: 10
+function isleapyear(year){
+    if(year % 400 === 0){
+        return true;
+    }
+    if(year % 4 === 0){
+        return true;
+    }
+    if(year % 100 === 0){
+        return false;
+    }
+    return false;
 }
 
-isPalindrome('oyo')
 
-console.log(checkPalindromeForAllFormats(date))
+function getNextDate(date){
+    var day = date.day + 1;
+    var month = date.month;
+    var year = date.year;
+
+    var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    if(month === 2){
+        if(isleapyear(year)){
+            if(day > 29){
+                day = 1;
+                month ++;
+            }
+        }else{
+            if(day>28){
+                day = 1;
+                month ++;
+            }
+        }
+    }
+    else{
+        if(day > daysInMonth[month - 1]){
+            day = 1;
+            month ++;
+        }
+    }
+    if(month > 12){
+        month = 1;
+        year ++;
+    }
+
+    return{
+        day: day,
+        month: month,
+        year: year,
+    }
+
+}
+
+function getNextPalindromeDate(date){
+    var ctr = 0;
+    var nextDate = getNextDate(date)
+
+    while(1){
+        ctr ++;
+        var isPalindrome = checkPalindromeForAllFormats(nextDate);
+        if(isPalindrome){
+            break;
+        }
+        nextDate = getNextDate(nextDate);
+    }
+    return [ctr, nextDate];
+    console.log("print");
+}
+
+var date = {
+    day: 28,
+    month: 02,
+    year: 1996,
+}
+
+//isPalindrome('oyo')
+
+console.log(getNextPalindromeDate(date))
+
